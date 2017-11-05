@@ -22,9 +22,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -246,5 +249,12 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
                 probeInfo.progress((int) (tile.getProgress() * 100), 100);
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockAccess world, BlockPos pos, EnumFacing facing){
+        final IBlockState sideState = world.getBlockState(pos.offset(facing));
+        final Block side = sideState.getBlock();
+        return !(side.isOpaqueCube(sideState) || side instanceof BlockInfestedLeaves);
     }
 }
