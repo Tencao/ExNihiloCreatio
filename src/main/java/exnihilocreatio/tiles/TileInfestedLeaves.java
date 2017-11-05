@@ -2,11 +2,13 @@ package exnihilocreatio.tiles;
 
 import exnihilocreatio.blocks.BlockInfestedLeaves;
 import exnihilocreatio.config.ModConfig;
+import exnihilocreatio.networking.PacketHandler;
 import exnihilocreatio.texturing.Color;
 import exnihilocreatio.util.Util;
 import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
@@ -31,19 +33,24 @@ public class TileInfestedLeaves extends BaseTileEntity implements ITickable {
     // Let's hope no one gets 2 billion in their server
     private int updateIndex = tileId++ % ModConfig.infested_leaves.leavesUpdateFrequency;
 
+    private int doProgress = ModConfig.infested_leaves.ticksToTransform / 100;
     @Override
     public void update() {
-        if (progress < 1.0F) {
-            progress += 1.0 / ModConfig.infested_leaves.ticksToTransform;
-
-            markDirtyClient();
+        if (progress < 1.0F && doProgress <= 0) {
+            // Only update everytime 1% of progress is done
+            progress += Math.max(0.01, 100.0 / ModConfig.infested_leaves.ticksToTransform);
+            doProgress = ModConfig.infested_leaves.ticksToTransform / 100;
 
             if (progress > 1.0F) {
                 progress = 1.0F;
 
                 getWorld().notifyBlockUpdate(pos, getWorld().getBlockState(pos), getWorld().getBlockState(pos), 3);
             }
+
+            // markdirtyclient makes a lot of chunk updates, send the NBT without the overhead.
+            PacketHandler.sendNBTUpdate(this);
         }
+        doProgress -= 1;
 
         // Don't update unless there's leaves nearby, or we haven't checked for leavesUpdateFrequency ticks. And only update on the server
         if (!getWorld().isRemote && hasNearbyLeaves || getWorld().getTotalWorldTime() % ModConfig.infested_leaves.leavesUpdateFrequency == updateIndex) {
@@ -76,12 +83,13 @@ public class TileInfestedLeaves extends BaseTileEntity implements ITickable {
 
     @SideOnly(Side.CLIENT)
     public int getColor() {
-        if (pos == null) {
+/*        if (pos == null) {
             return Util.whiteColor.toInt();
         } else {
             Color green = new Color(BiomeColorHelper.getFoliageColorAtPos(getWorld(), pos));
             return Color.average(green, Util.whiteColor, (float) Math.pow(progress, 2)).toInt();
-        }
+        }*/
+        return Minecraft.getMinecraft().getBlockColors().getColor(getLeafBlock(), getWorld(), pos);
     }
 
     public void setProgress(float newProgress) {
@@ -119,5 +127,11 @@ public class TileInfestedLeaves extends BaseTileEntity implements ITickable {
         }
 
         super.readFromNBT(tag);
+    }
+
+    @Override
+    public boolean hasFastRenderer(){
+        // Tells MC that we're going to be using a FastTESR instead of a normal TESR
+        return true;
     }
 }
