@@ -34,49 +34,6 @@ import java.util.List;
 import static java.lang.Math.round;
 
 public class RenderInfestedLeaves extends FastTESR<TileInfestedLeaves> {
-/*    @Override
-    public void render(TileInfestedLeaves tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-        if (tile != null) {
-            long seed = tile.getWorld().rand.nextLong();
-            int color = tile.getColor();
-
-            IBlockState leafBlock = tile.getLeafBlock();
-            IBakedModel leafModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(leafBlock);
-
-            if (leafModel == Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel()) {
-                leafModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(Blocks.LEAVES.getDefaultState());
-            }
-
-            List<BakedQuad> leafQuads = Lists.newArrayList();
-
-            for (EnumFacing side : EnumFacing.VALUES) {
-                if (leafBlock.shouldSideBeRendered(tile.getWorld(), tile.getPos(), side)) {
-                    leafQuads.addAll(leafModel.getQuads(leafBlock, side, seed));
-                }
-            }
-
-            Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder buffer = tessellator.getBuffer();
-
-            bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-
-            GlStateManager.pushMatrix();
-            GlStateManager.translate(x, y, z);
-            RenderHelper.disableStandardItemLighting();
-
-            buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-
-            for (BakedQuad quad : leafQuads) {
-                LightUtil.renderQuadColor(buffer, quad, color);
-            }
-
-            tessellator.draw();
-
-            RenderHelper.enableStandardItemLighting();
-            GlStateManager.popMatrix();
-        }
-    }*/
-
     private static ModelVertex[] model = new ModelVertex[24];
     static {
         model[0] = new ModelVertex( EnumFacing.UP, 0, 1, 0, 0, 0, 0, 0 );
