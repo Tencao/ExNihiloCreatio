@@ -92,9 +92,9 @@ public class RenderInfestedLeaves extends FastTESR<TileInfestedLeaves> {
         gColor += round((255 - gColor)*te.getProgress());
         bColor += round((255 - bColor)*te.getProgress());
 
-        buffer.setTranslation(x-pos.getX(), y-pos.getY(), z-pos.getZ());
         final TextureAtlasSprite sprite = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state);
 
+        buffer.setTranslation(x-pos.getX(), y-pos.getY(), z-pos.getZ());
         for ( final ModelVertex vert : model )
         {
             final EnumFacing face = vert.face;
