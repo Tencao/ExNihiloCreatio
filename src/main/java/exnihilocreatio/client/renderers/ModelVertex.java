@@ -1,6 +1,13 @@
 package exnihilocreatio.client.renderers;
 
+import exnihilocreatio.texturing.Color;
+import exnihilocreatio.texturing.SpriteColor;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.VertexFormatElement;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 
 public class ModelVertex {
     final EnumFacing face;

@@ -76,9 +76,9 @@ public class RenderInfestedLeaves extends FastTESR<TileInfestedLeaves> {
         if(!(block instanceof BlockInfestedLeaves)) return;
 
         // Light levels
-        final int mixedBrightness = te.getWorld().getBlockState( pos ).getPackedLightmapCoords( te.getWorld(), te.getPos() );
-        final int skyLight = mixedBrightness >> 16 & 65535;
-        final int blockLight = mixedBrightness & 65535;
+        final int mixedBrightness = te.getWorld().getBlockState(pos).getPackedLightmapCoords(te.getWorld(), te.getPos());
+        final int skyLight = mixedBrightness >> 16 & 0xFFFF;
+        final int blockLight = mixedBrightness & 0xFFFF;
         //
         final IBlockState state = te.getLeafBlock();
 

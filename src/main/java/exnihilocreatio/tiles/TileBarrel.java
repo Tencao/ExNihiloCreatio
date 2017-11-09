@@ -267,4 +267,10 @@ public class TileBarrel extends BaseTileEntity implements ITickable {
         //Set the new cooldown time
         this.entityWalkCooldown = currentTime + milk.getCoolDown();
     }
+
+    @Override
+    public boolean hasFastRenderer(){
+        // Tells MC that we're going to be using a FastTESR instead of a normal TESR
+        return true;
+    }
 }

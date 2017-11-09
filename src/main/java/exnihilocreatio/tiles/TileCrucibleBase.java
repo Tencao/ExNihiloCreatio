@@ -63,7 +63,7 @@ public abstract class TileCrucibleBase extends BaseTileEntity implements ITickab
 
     public abstract int getHeatRate();
 
-    /**
+    /*
      * Returns array of FLUID color and Item Color
      * ITEMCOLOR is index 0
      * FLUIDCOLOR is index 1
@@ -241,5 +241,11 @@ public abstract class TileCrucibleBase extends BaseTileEntity implements ITickab
         }
 
         super.readFromNBT(tag);
+    }
+
+    @Override
+    public boolean hasFastRenderer(){
+        // Tells MC that we're going to be using a FastTESR instead of a normal TESR
+        return true;
     }
 }
